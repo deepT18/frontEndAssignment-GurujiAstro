@@ -16,6 +16,7 @@ const MultiStepForm = () => {
     state: "",
     zip: "",
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const savedData = localStorage.getItem("formData");
@@ -28,12 +29,44 @@ const MultiStepForm = () => {
     localStorage.setItem("formData", JSON.stringify(formData));
   }, [formData]);
 
-  // useEffect(() => {
-  //   console.log(Current step: ${currentStep});
-  // }, [currentStep]);
+  const validateStep1 = () => {
+    const { name, email, phone } = formData;
+    const newErrors = {};
+    if (!name) newErrors.name = "Name is required";
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Email is invalid";
+    }
+    if (!phone) newErrors.phone = "Phone number is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const { address1, city, state, zip } = formData;
+    const newErrors = {};
+    if (!address1) newErrors.address1 = "Address is required";
+    if (!city) newErrors.city = "City is required";
+    if (!state) newErrors.state = "State is required";
+    if (!zip) newErrors.zip = "ZIP code is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleNext = () => {
-    setCurrentStep(currentStep + 1);
+    let isValid = false;
+    if (currentStep === 1) {
+      isValid = validateStep1();
+    } else if (currentStep === 2) {
+      isValid = validateStep2();
+    } else {
+      isValid = true;
+    }
+
+    if (isValid) {
+      setCurrentStep(currentStep + 1);
+    }
   };
 
   const handleBack = () => {
@@ -52,28 +85,42 @@ const MultiStepForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Form submitted successfully!");
-    localStorage.removeItem("formData");
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      address1: "",
-      address2: "",
-      city: "",
-      state: "",
-      zip: "",
-    });
-    setCurrentStep(1);
+    if (validateStep2()) {
+      console.log("Form submitted:", formData);
+      alert("Form submitted successfully!");
+      localStorage.removeItem("formData");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        address1: "",
+        address2: "",
+        city: "",
+        state: "",
+        zip: "",
+      });
+      setCurrentStep(1);
+    }
   };
 
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <PersonalInfo formData={formData} handleChange={handleChange} />;
+        return (
+          <PersonalInfo
+            formData={formData}
+            handleChange={handleChange}
+            errors={errors}
+          />
+        );
       case 2:
-        return <AddressInfo formData={formData} handleChange={handleChange} />;
+        return (
+          <AddressInfo
+            formData={formData}
+            handleChange={handleChange}
+            errors={errors}
+          />
+        );
       case 3:
         return <Confirmation formData={formData} />;
       default:
@@ -83,7 +130,7 @@ const MultiStepForm = () => {
 
   return (
     <div className="form-container">
-      <h2>Multi-Step Form</h2>
+      <h2 style={{ textAlign: "center" }}>Multi-Step Form</h2>
       <div className="steps">
         <button onClick={() => setCurrentStep(1)} disabled={currentStep === 1}>
           Step 1
