@@ -129,6 +129,7 @@ const MultiStepForm = () => {
   };
 
   return (
+    <div className="body-container">
     <div className="form-container">
       <h2 style={{ textAlign: "center" }}>Multi-Step Form</h2>
       <div className="steps">
@@ -163,6 +164,7 @@ const MultiStepForm = () => {
           )}
         </div>
       </form>
+    </div>
     </div>
   );
 };
