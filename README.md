@@ -2,6 +2,10 @@
 
 This project implements a responsive multi-step form using React.js. The form consists of three steps and includes data validation, error handling, navigation controls, state management, and local storage persistence. The form is designed to work well on desktop, tablet, and mobile screens.
 
+## DEPLOYMENT LINK (Deployed in Vercel)
+
+https://frontend-assignment-guruji-astro.vercel.app/
+
 ## PROJECT SCREENSHOT
 ![Project Screenshot](./public/Screenshot%202024-06-22%20084730.png)
 
