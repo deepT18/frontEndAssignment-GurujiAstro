@@ -85,9 +85,9 @@ input {
   max-width: 600px;
   /* margin: 0 auto; */
   padding: 20px;
-  border: 2px solid #ccc;
+  border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   background-color: #fff;
   margin-top:40px;
 }
